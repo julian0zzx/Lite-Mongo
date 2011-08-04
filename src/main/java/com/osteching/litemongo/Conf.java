@@ -11,17 +11,17 @@ public final class Conf {
 
     private PropertiesConfiguration configuration = null;
 
-    public static final String CONF_FILE = "lite-mongo.properties";
+    private static final String CONF_FILE = "lite-mongo.properties";
     
-    public static final String HOST = "host";
+    private static final String HOST = "host";
     
-    public static final String PORT = "port";
+    private static final String PORT = "port";
     
-    public static final String DB = "db";
+    private static final String DB = "db";
     
-    public static final String USERNAME = "username";
+    private static final String USERNAME = "username";
     
-    public static final String PASSWORD = "password";
+    private static final String PASSWORD = "password";
 
     private Conf() {
         try {

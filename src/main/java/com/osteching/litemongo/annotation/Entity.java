@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Entity {
     
-    String collection();
+    /**
+     * target collection in MongoDB
+     * @return
+     */
+    String value();
     
 }

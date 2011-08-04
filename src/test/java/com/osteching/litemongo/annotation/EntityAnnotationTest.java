@@ -32,7 +32,7 @@ public class EntityAnnotationTest {
     public void testEntity() throws Exception {
         Class<? extends Person> plazz = p.getClass();
         Entity annoEntity = plazz.getAnnotation(Entity.class);
-        assertTrue("person".equals(annoEntity.collection()));
+        assertTrue("person".equals(annoEntity.value()));
     }
     
     @Test
@@ -41,18 +41,19 @@ public class EntityAnnotationTest {
         java.lang.reflect.Field[] fs = plazz.getFields();
         for (java.lang.reflect.Field f : fs) {
             Field annoField = f.getAnnotation(Field.class);
-            assertTrue("name".equals(annoField.key()) || "age".equals(annoField.key()));
+            assertTrue("name".equals(annoField.value()) || "age".equals(annoField.value()));
         }
     }
     
-    @Test
-    public void testInsert() throws Exception {
-        DB db = MongoDbConnection.getConn().getDb();
-        DBCollection persons = db.getCollection("person");
-        DBObject p = new BasicDBObject();
-        p.put("name", "Jack");
-        p.put("age", 32);
-        assertTrue(persons.count() > 0);
-    }
+//    @Test
+//    public void testInsert() throws Exception {
+//        DB db = MongoDbConnection.getConn().getDb();
+//        DBCollection persons = db.getCollection("person");
+//        DBObject p = new BasicDBObject();
+//        p.put("name", "Jack");
+//        p.put("age", 32);
+//        persons.insert(p);
+//        assertTrue(persons.count() > 0);
+//    }
     
 }

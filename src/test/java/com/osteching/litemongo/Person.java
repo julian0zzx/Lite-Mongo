@@ -3,13 +3,13 @@ package com.osteching.litemongo;
 import com.osteching.litemongo.annotation.Entity;
 import com.osteching.litemongo.annotation.Field;
 
-@Entity(collection = "person")
+@Entity("person")
 public class Person {
     
-    @Field(key="name")
+    @Field("name")
     private String name;
 
-    @Field(key="age")
+    @Field("age")
     private int age;
 
     public Person() {

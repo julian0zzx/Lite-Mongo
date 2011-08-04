@@ -13,7 +13,7 @@ public class SessionImpl<T> implements Session<T> {
     
     @Override
     public boolean save(T t) {
-        String key = Util.getKey(t);
+        String key = Util.genObjectKey(t);
         String collection = EntityPool.getCollection(key);
         Field[] fields = EntityPool.getFields(key);
         return false;

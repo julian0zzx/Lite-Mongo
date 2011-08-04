@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD/*, ElementType.METHOD*/ })
 public @interface Field {
     
-    String key();
+    /**
+     * field in given collection in MongoDB
+     * @return
+     */
+    String value();
     
 }

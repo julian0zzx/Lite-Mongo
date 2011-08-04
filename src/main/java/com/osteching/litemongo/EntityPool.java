@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.osteching.litemongo.annotation.Entity;
 
-public class EntityPool {
+public final class EntityPool {
+    private EntityPool() {
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(EntityPool.class);
 
@@ -18,7 +20,7 @@ public class EntityPool {
     private static Map<String, Field[]> _fieldPool = new ConcurrentHashMap<String, Field[]>();
 
     private static Map<String, String> _collectionPool = new ConcurrentHashMap<String, String>();
-
+    
     public static void put(Object entity) {
         Class<? extends Object> plazz = entity.getClass();
         Entity annoEntity = plazz.getAnnotation(Entity.class);
@@ -26,7 +28,7 @@ public class EntityPool {
             throw new IllegalArgumentException("---target entity MUST be annotated by "
                             + Entity.class.getName() + "---");
         }
-        String key = Util.getKey(entity);
+        String key = Util.genObjectKey(entity);
         if (_pool.containsKey(key)) {
             throw new IllegalArgumentException("---duplicated entity - " + key + "---");
         }
@@ -34,7 +36,7 @@ public class EntityPool {
         logger.debug(key + " was pooled");
         _pool.put(key, entity);
         _fieldPool.put(key, plazz.getFields());
-        _collectionPool.put(key, annoEntity.collection());
+        _collectionPool.put(key, annoEntity.value());
     }
 
     public static Object get(String key) {

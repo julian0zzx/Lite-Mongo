@@ -1,10 +1,12 @@
 package com.osteching.litemongo.command;
 
+import java.lang.reflect.Method;
+
 
 public class UpdateCommand extends AbstractCommand {
 
-    public UpdateCommand(Object[] args) {
-        super(args);
+    public UpdateCommand(Method method, Object[] args) {
+        super(method, args);
     }
 
     @Override

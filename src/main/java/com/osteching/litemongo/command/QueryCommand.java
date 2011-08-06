@@ -1,10 +1,12 @@
 package com.osteching.litemongo.command;
 
+import java.lang.reflect.Method;
+
 
 public class QueryCommand extends AbstractCommand {
 
-    public QueryCommand(Object[] args) {
-        super(args);
+    public QueryCommand(Method method, Object[] args) {
+        super(method, args);
     }
 
     @Override

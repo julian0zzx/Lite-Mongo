@@ -1,10 +1,12 @@
 package com.osteching.litemongo.command;
 
+import java.lang.reflect.Method;
+
 
 public class InsertCommand extends AbstractCommand {
 
-    public InsertCommand(Object[] args) {
-        super(args);
+    public InsertCommand(Method method, Object[] args) {
+        super(method, args);
     }
 
     @Override

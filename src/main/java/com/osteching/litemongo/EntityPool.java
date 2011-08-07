@@ -21,20 +21,19 @@ public final class EntityPool {
 
     private static Map<String, String> _collectionPool = new ConcurrentHashMap<String, String>();
     
-    public static void put(Object entity) {
-        Class<? extends Object> plazz = entity.getClass();
+    public static void put(Class<? extends Object> plazz) {
         Entity annoEntity = plazz.getAnnotation(Entity.class);
         if (null == annoEntity) {
             throw new IllegalArgumentException("---target entity MUST be annotated by "
                             + Entity.class.getName() + "---");
         }
-        String key = Util.genObjectKey(entity);
+        String key = KeyUtil.genObjectKey(plazz);
         if (_pool.containsKey(key)) {
             throw new IllegalArgumentException("---duplicated entity - " + key + "---");
         }
 
         logger.debug(key + " was pooled");
-        _pool.put(key, entity);
+        _pool.put(key, plazz);
         _fieldPool.put(key, plazz.getFields());
         _collectionPool.put(key, annoEntity.value());
     }

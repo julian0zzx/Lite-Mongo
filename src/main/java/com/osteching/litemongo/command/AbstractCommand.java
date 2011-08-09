@@ -1,6 +1,7 @@
 package com.osteching.litemongo.command;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -11,7 +12,10 @@ import com.osteching.litemongo.MongoDbConnection;
 import com.osteching.litemongo.Operator;
 import com.osteching.litemongo.annotation.Dao;
 import com.osteching.litemongo.annotation.Entity;
+import com.osteching.litemongo.annotation.Field;
 import com.osteching.litemongo.annotation.Param;
+import com.osteching.litemongo.annotation.crud.Insert;
+import com.osteching.litemongo.annotation.crud.Update;
 
 public abstract class AbstractCommand implements Command {
 
@@ -38,13 +42,40 @@ public abstract class AbstractCommand implements Command {
             throw new IllegalStateException("---Parameters should be annotated---");
         }
         for (int i = 0, n = args.length; i < n; i++) {
-            for (int j = 0, m = as[i].length; j < m; j++) {
-                if (Param.class == as[i][j].annotationType()) {
-                    Param p = Param.class.cast(as[i][j]);
-                    dbo.put(p.value(),
-                                    Operator.EQ.equals(p.opr()) ? args[i] : new BasicDBObject(p
-                                                    .opr(), args[i]));
-                    break;
+            if (0 != as[i].length) {
+                for (int j = 0, m = as[i].length; j < m; j++) {
+                    if (Param.class == as[i][j].annotationType()) {
+                        Param p = Param.class.cast(as[i][j]);
+                        dbo.put(p.value(), Operator.EQ.equals(p.opr()) ? args[i]
+                                        : new BasicDBObject(p.opr(), args[i]));
+                        break;
+                    }
+                }
+            } else { // MUST be insert and update
+                Insert in = method.getAnnotation(Insert.class);
+                Update up = method.getAnnotation(Update.class);
+                if (null == in && null == up) {
+                    throw new IllegalStateException("---only Insert/Update can ignore @C/R/U/Ds---");
+                }
+                Object obj = args[0];
+                java.lang.reflect.Field[] fs = obj.getClass().getDeclaredFields();
+                for (java.lang.reflect.Field f: fs) {
+                    Field af = f.getAnnotation(Field.class);
+                    try {
+                        String fgr = "get" + Character.toUpperCase(f.getName().charAt(0))+f.getName().substring(1);
+                        Method mr = obj.getClass().getMethod(fgr, new Class[0]);
+                        dbo.put(af.value(), mr.invoke(obj, new Object[0]));
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

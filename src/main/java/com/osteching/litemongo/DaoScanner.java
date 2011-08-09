@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.osteching.litemongo.annotation.Dao;
 import com.osteching.litemongo.annotation.Entity;
 
 public class DaoScanner {
@@ -29,13 +30,11 @@ public class DaoScanner {
         }
     }
     
-    public void scan(Class<? extends Object> entity) {
-        Class<? extends Object> clazz = entity.getClass();
+    public void scan(Class<? extends Object> clazz) {
         logger.debug("scan " + clazz.getName());
         
-        Annotation annoEntity = clazz.getAnnotation(Entity.class);
-        if (null != annoEntity && annoEntity instanceof Entity) {
-            EntityPool.put(entity);
+        Annotation annoEntity = clazz.getAnnotation(Dao.class);
+        if (null != annoEntity && annoEntity instanceof Dao) {
             DaoFactory.put(clazz);
         } else {
             logger.debug("invalid entity " + clazz.getName());

@@ -7,8 +7,8 @@ import com.mongodb.DBObject;
 
 public class InsertCommand extends AbstractCommand {
 
-    public InsertCommand(Method method, Object[] args) {
-        super(method, args);
+    public InsertCommand(Method method) {
+        super(method);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.osteching.litemongo.command.Command;
 import com.osteching.litemongo.command.CommandFactory;
 
 public final class DaoFactory {
@@ -21,7 +22,9 @@ public final class DaoFactory {
                             @Override
                             public Object invoke(Object target, Method m, Object[] args)
                                             throws Throwable {
-                                return CommandFactory.getCommand(m, args).execute();
+                                Command cmd = CommandFactory.getCommand(m);
+                                cmd.setArgs(args);
+                                return CommandFactory.getCommand(m).execute();
                             }
                         }));
     }

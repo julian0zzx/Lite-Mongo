@@ -5,6 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -19,12 +22,17 @@ import com.osteching.litemongo.annotation.crud.Update;
 
 public abstract class AbstractCommand implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(AbstractCommand.class);
+
     protected Method method = null;
 
     protected Object[] args = null;
 
-    public AbstractCommand(Method method, Object[] args) {
+    public AbstractCommand(Method method) {
         this.method = method;
+    }
+    
+    public void setArgs(Object[] args) {
         this.args = args;
     }
 
@@ -39,7 +47,9 @@ public abstract class AbstractCommand implements Command {
         BasicDBObject dbo = new BasicDBObject();
         Annotation[][] as = method.getParameterAnnotations();
         if (as.length != args.length) {
-            throw new IllegalStateException("---Parameters should be annotated---");
+            logger.warn(method.getDeclaringClass().getName() + "#" + method.getName()
+                            + ", parameters should all be annotated");
+            throw new IllegalStateException("---Parameters should all be annotated---");
         }
         for (int i = 0, n = args.length; i < n; i++) {
             if (0 != as[i].length) {
@@ -55,26 +65,28 @@ public abstract class AbstractCommand implements Command {
                 Insert in = method.getAnnotation(Insert.class);
                 Update up = method.getAnnotation(Update.class);
                 if (null == in && null == up) {
-                    throw new IllegalStateException("---only Insert/Update can ignore @C/R/U/Ds---");
+                    logger.warn("if parameters with @Param it should be Insert/Update, but it is not");
+                    throw new IllegalStateException("---only Insert/Update can ignore @Param---");
                 }
                 Object obj = args[0];
                 java.lang.reflect.Field[] fs = obj.getClass().getDeclaredFields();
-                for (java.lang.reflect.Field f: fs) {
+                for (java.lang.reflect.Field f : fs) {
                     Field af = f.getAnnotation(Field.class);
                     try {
-                        String fgr = "get" + Character.toUpperCase(f.getName().charAt(0))+f.getName().substring(1);
+                        String fgr = "get" + Character.toUpperCase(f.getName().charAt(0))
+                                        + f.getName().substring(1);
                         Method mr = obj.getClass().getMethod(fgr, new Class[0]);
                         dbo.put(af.value(), mr.invoke(obj, new Object[0]));
                     } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
+                        logger.warn(e.getMessage());
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        logger.warn(e.getMessage());
                     } catch (SecurityException e) {
-                        e.printStackTrace();
+                        logger.warn(e.getMessage());
                     } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
+                        logger.warn(e.getMessage());
                     } catch (InvocationTargetException e) {
-                        e.printStackTrace();
+                        logger.warn(e.getMessage());
                     }
                 }
             }

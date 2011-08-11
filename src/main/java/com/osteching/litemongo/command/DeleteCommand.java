@@ -7,8 +7,8 @@ import com.mongodb.WriteResult;
 
 public class DeleteCommand extends AbstractCommand {
 
-    public DeleteCommand(Method method, Object[] args) {
-        super(method, args);
+    public DeleteCommand(Method method) {
+        super(method);
     }
 
     @Override

@@ -8,8 +8,8 @@ import com.mongodb.DBObject;
 
 public class UpdateCommand extends AbstractCommand {
 
-    public UpdateCommand(Method method, Object[] args) {
-        super(method, args);
+    public UpdateCommand(Method method) {
+        super(method);
     }
 
     @Override

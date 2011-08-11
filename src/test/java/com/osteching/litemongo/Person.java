@@ -5,7 +5,10 @@ import com.osteching.litemongo.annotation.Field;
 
 @Entity("person")
 public class Person {
-    
+
+    @Field("_id")
+    private String id;
+
     @Field("name")
     private String name;
 
@@ -34,6 +37,14 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 }

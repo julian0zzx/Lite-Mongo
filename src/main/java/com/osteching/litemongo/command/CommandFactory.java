@@ -23,7 +23,7 @@ public final class CommandFactory {
     private CommandFactory() {
     }
 
-    public synchronized static Command getCommand(Method m, Object[] args) {
+    public synchronized static Command getCommand(Method m) {
         Class<? extends Object> clazz = m.getDeclaringClass();
         logger.debug("get command according to " + clazz.getName() + "#" + m.getName());
         Dao daoAnn = clazz.getAnnotation(Dao.class);
@@ -44,13 +44,13 @@ public final class CommandFactory {
             for (Annotation a : anns) {
                 logger.debug("initialize " + clazz.getName() + "#" + m.getName());
                 if (a instanceof Delete) {
-                    cmd = new DeleteCommand(m, args);
+                    cmd = new DeleteCommand(m);
                 } else if (a instanceof Insert) {
-                    cmd = new InsertCommand(m, args);
+                    cmd = new InsertCommand(m);
                 } else if (a instanceof Query) {
-                    cmd = new QueryCommand(m, args);
+                    cmd = new QueryCommand(m);
                 } else if (a instanceof Update) {
-                    cmd = new UpdateCommand(m, args);
+                    cmd = new UpdateCommand(m);
                 } else {
                     logger.debug(clazz.getName() + "#" + m.getName()
                                     + " without @Delete/@Insert/@Query/@Update");

@@ -27,7 +27,7 @@ public final class Conf {
         try {
             configuration = new PropertiesConfiguration(CONF_FILE);
         } catch (ConfigurationException e) {
-            logger.error("---read configuration file failed---", e.getMessage());
+            logger.error("read configuration file failed, {}", e.getMessage());
         }
     }
     

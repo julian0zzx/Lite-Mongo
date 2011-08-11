@@ -31,7 +31,7 @@ public abstract class AbstractCommand implements Command {
     public AbstractCommand(Method method) {
         this.method = method;
     }
-    
+
     public void setArgs(Object[] args) {
         this.args = args;
     }
@@ -47,8 +47,8 @@ public abstract class AbstractCommand implements Command {
         BasicDBObject dbo = new BasicDBObject();
         Annotation[][] as = method.getParameterAnnotations();
         if (as.length != args.length) {
-            logger.warn(method.getDeclaringClass().getName() + "#" + method.getName()
-                            + ", parameters should all be annotated");
+            logger.warn("{}#{}, parameters should all be annotated", method.getDeclaringClass()
+                            .getName(), method.getName());
             throw new IllegalStateException("---Parameters should all be annotated---");
         }
         for (int i = 0, n = args.length; i < n; i++) {

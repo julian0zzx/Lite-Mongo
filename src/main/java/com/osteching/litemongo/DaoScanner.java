@@ -10,10 +10,11 @@ import org.slf4j.LoggerFactory;
 import com.osteching.litemongo.annotation.Dao;
 
 public class DaoScanner {
+
     private static final Logger logger = LoggerFactory.getLogger(DaoScanner.class);
 
     private Collection<Class<? extends Object>> entities = null;
-    
+
     public DaoScanner() {
         entities = new ArrayList<Class<? extends Object>>();
     }
@@ -22,21 +23,21 @@ public class DaoScanner {
         entities = new ArrayList<Class<? extends Object>>();
         entities.addAll(c);
     }
-    
+
     public void scan() {
         for (Class<? extends Object> e : entities) {
             scan(e);
         }
     }
-    
+
     public void scan(Class<? extends Object> clazz) {
-        logger.debug("scan " + clazz.getName());
-        
+        logger.debug("scan {}", clazz.getName());
+
         Annotation annoEntity = clazz.getAnnotation(Dao.class);
         if (null != annoEntity && annoEntity instanceof Dao) {
             DaoFactory.put(clazz);
         } else {
-            logger.debug("invalid entity " + clazz.getName());
+            logger.debug("invalid entity {}", clazz.getName());
         }
     }
 }

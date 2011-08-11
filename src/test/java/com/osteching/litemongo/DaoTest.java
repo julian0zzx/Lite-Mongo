@@ -1,6 +1,7 @@
 package com.osteching.litemongo;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
@@ -67,8 +68,28 @@ public class DaoTest {
         Person np = new Person("ttttt", 11);
         np.setId("12345678");
         dao.insert(np);
-        
 
+        np.setAge(np.getAge() + 100);
+        dao.update(np);
+
+        DB db = MongoDbConnection.getConn().getDb();
+        DBCollection persons = db.getCollection("person");
+
+        DBCursor cr = persons.find(new BasicDBObject("_id", "12345678"));
+        assertTrue(cr.hasNext());
+
+        DBObject o2 = cr.next();
+        assertSame(np.getAge(), o2.get("age"));
     }
 
+    @Test
+    public void testQuery() {
+        Person np = new Person("ssss", 11);
+        np.setId("1111111");
+        dao.insert(np);
+
+        Person p2 = dao.get("1111111");
+
+        assertSame(np.getAge(), p2.getAge());
+    }
 }

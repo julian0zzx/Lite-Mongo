@@ -1,6 +1,7 @@
 package com.osteching.litemongo;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -91,5 +92,12 @@ public class DaoTest {
         Person p2 = dao.get("1111111");
 
         assertSame(np.getAge(), p2.getAge());
+    }
+
+    @Test
+    public void testQuery2() {
+        Person p2 = dao.get("ttttt", 111);
+
+        assertNotNull(p2);
     }
 }

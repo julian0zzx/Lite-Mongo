@@ -58,7 +58,6 @@ public abstract class AbstractCommand implements Command {
                         Param p = Param.class.cast(as[i][j]);
                         dbo.put(p.value(), Operator.EQ.equals(p.opr()) ? args[i]
                                         : new BasicDBObject(p.opr(), args[i]));
-                        break;
                     }
                 }
             } else { // MUST be insert and update

@@ -1,6 +1,5 @@
 package com.osteching.litemongo;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,9 +32,10 @@ public class DaoScanner {
     public void scan(Class<? extends Object> clazz) {
         logger.debug("scan {}", clazz.getName());
 
-        Annotation annoEntity = clazz.getAnnotation(Dao.class);
-        if (null != annoEntity && annoEntity instanceof Dao) {
+        Dao daoAnn = clazz.getAnnotation(Dao.class);
+        if (null != daoAnn) {
             DaoFactory.put(clazz);
+            EntityPool.put(daoAnn.value());
         } else {
             logger.debug("invalid entity {}", clazz.getName());
         }

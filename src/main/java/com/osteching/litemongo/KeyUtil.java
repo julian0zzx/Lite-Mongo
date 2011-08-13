@@ -9,7 +9,12 @@ public final class KeyUtil {
     }
 
     public static String genMethodKey(Method m) {
-        return m.getDeclaringClass().getName() + "#" + m.getName();
+        Class<? extends Object>[] paramTypes = m.getParameterTypes();
+        StringBuilder sb = new StringBuilder();
+        for (Class<? extends Object> t : paramTypes) {
+            sb.append(t.getName()).append(",");
+        }
+        return m.getDeclaringClass().getName() + "#" + m.getName() + "#" + sb.toString();
     }
 
 }

@@ -2,12 +2,12 @@ package com.osteching.litemongo.command;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.osteching.litemongo.KeyUtil;
 import com.osteching.litemongo.annotation.Dao;
 import com.osteching.litemongo.annotation.crud.Delete;
 import com.osteching.litemongo.annotation.crud.Insert;
@@ -18,7 +18,7 @@ public final class CommandFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(CommandFactory.class);
 
-    private static ConcurrentHashMap<String, Command> _cmdPool = new ConcurrentHashMap<String, Command>();
+    private static Map<Method, Command> _cmdPool = new ConcurrentHashMap<Method, Command>();
 
     private CommandFactory() {
     }
@@ -35,9 +35,8 @@ public final class CommandFactory {
 
         Command cmd = null;
 
-        String key = KeyUtil.genMethodKey(m);
-        if (_cmdPool.containsKey(key)) {
-            cmd = _cmdPool.get(key);
+        if (_cmdPool.containsKey(m)) {
+            cmd = _cmdPool.get(m);
             return cmd;
         } else {
             Annotation[] anns = m.getAnnotations();
@@ -58,7 +57,7 @@ public final class CommandFactory {
                 if (null != cmd)
                     break;
             }
-            _cmdPool.put(key, cmd);
+            _cmdPool.put(m, cmd);
             return cmd;
         }
 

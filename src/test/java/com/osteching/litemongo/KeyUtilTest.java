@@ -11,10 +11,12 @@ public class KeyUtilTest {
         assertEquals("com.osteching.litemongo.Person", KeyUtil.genObjectKey(Person.class));
     }
 
-    @Test
+    // use method as key directly 
+    // @Test
     public void testGenMethodKey() throws Exception {
-        assertEquals("com.osteching.litemongo.PersonDao#delete", KeyUtil.genMethodKey(PersonDao.class.getDeclaredMethod("delete",
-                        new Class[] { String.class })));
+        assertEquals("com.osteching.litemongo.PersonDao#delete",
+                        KeyUtil.genMethodKey(PersonDao.class.getDeclaredMethod("delete",
+                                        new Class[] { String.class })));
     }
 
 }

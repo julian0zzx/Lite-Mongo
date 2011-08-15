@@ -1,6 +1,5 @@
 package com.osteching.litemongo;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -12,24 +11,13 @@ public class DaoScanner {
 
     private static final Logger logger = LoggerFactory.getLogger(DaoScanner.class);
 
-    private Collection<Class<? extends Object>> entities = null;
-
-    public DaoScanner() {
-        entities = new ArrayList<Class<? extends Object>>();
-    }
-
-    public DaoScanner(Collection<Class<? extends Object>> c) {
-        entities = new ArrayList<Class<? extends Object>>();
-        entities.addAll(c);
-    }
-
-    public void scan() {
+    public static void scan(Collection<Class<? extends Object>> entities) {
         for (Class<? extends Object> e : entities) {
             scan(e);
         }
     }
 
-    public void scan(Class<? extends Object> clazz) {
+    public static void scan(Class<? extends Object> clazz) {
         logger.debug("scan {}", clazz.getName());
 
         Dao daoAnn = clazz.getAnnotation(Dao.class);

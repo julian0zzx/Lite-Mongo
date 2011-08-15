@@ -22,7 +22,7 @@ public class DaoTest {
 
     @BeforeClass
     public static void before() throws Exception {
-        new DaoScanner().scan(PersonDao.class);
+        DaoScanner.scan(PersonDao.class);
     }
 
     @Before

@@ -24,7 +24,7 @@ public final class DaoFactory {
                                             throws Throwable {
                                 Command cmd = CommandFactory.getCommand(m);
                                 cmd.setArgs(args);
-                                return CommandFactory.getCommand(m).execute();
+                                return cmd.execute();
                             }
                         }));
     }

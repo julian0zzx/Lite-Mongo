@@ -66,8 +66,7 @@ public class QueryCommand extends AbstractCommand {
                 try {
                     String str = "set" + Character.toUpperCase(f.getName().charAt(0))
                                     + f.getName().substring(1);
-                    Map<String, Method> beanMethods = EntityPool.getMethods(method
-                                    .getDeclaringClass().getAnnotation(Dao.class).value());
+                    Map<String, Method> beanMethods = EntityPool.getMethods(bean);
                     Method setter = beanMethods.get(str);
                     if (null == setter) {
                         logger.warn("{} is without {}",

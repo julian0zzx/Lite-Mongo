@@ -19,7 +19,7 @@ public class DaoFactoryTest {
 
     @Test
     public void testGet() {
-        new DaoScanner().scan(PersonDao.class);
+        DaoScanner.scan(PersonDao.class);
         PersonDao dao = DaoFactory.get(PersonDao.class);
         assertNotNull(dao);
     }
